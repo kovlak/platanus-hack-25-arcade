@@ -175,7 +175,12 @@ class GameScene extends Phaser.Scene {
     this.xpToLevel = 10;
     this.level = 1;
     this.score = 0;
-    this.bestScore = parseInt(localStorage.getItem('musicWarsBest') || '0');
+    // Safe localStorage access for sandboxed environment
+    try {
+      this.bestScore = parseInt(localStorage.getItem('musicWarsBest') || '0');
+    } catch (e) {
+      this.bestScore = 0; // Fallback for sandboxed environment
+    }
     this.time = 0;
 
     // Ultimate ability system
@@ -3012,7 +3017,12 @@ class GameScene extends Phaser.Scene {
     const isNewRecord = this.score > this.bestScore;
     if (isNewRecord) {
       this.bestScore = this.score;
-      localStorage.setItem('musicWarsBest', this.bestScore.toString());
+      // Safe localStorage access for sandboxed environment
+      try {
+        localStorage.setItem('musicWarsBest', this.bestScore.toString());
+      } catch (e) {
+        // Silently fail in sandboxed environment - best score still tracked in memory
+      }
     }
 
     this.add.text(400, 350, 'Score: ' + this.score, {
