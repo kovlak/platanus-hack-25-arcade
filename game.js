@@ -149,7 +149,7 @@ class GameScene extends Phaser.Scene {
 
     // Player setup
     const playerHp = charType === 0 ? 25 : (charType === 1 ? 25 : 10); // Classical:25, Rock:25, Electronic:10
-    const playerSpd = charType === 0 ? 33 : (charType === 1 ? 40 : 46); // Classical:33, Rock:40, Electronic:46
+    const playerSpd = charType === 0 ? 36.3 : (charType === 1 ? 44 : 50.6); // Classical:36.3, Rock:44, Electronic:50.6 (+10% speed)
     this.player = {
       x: 400, y: 300,
       hp: playerHp,
@@ -191,7 +191,7 @@ class GameScene extends Phaser.Scene {
     this.paused = false;
 
     // Weapon stats
-    this.weaponDmg = charType === 1 ? 30 : 10; // Rock starts with triple damage
+    this.weaponDmg = charType === 1 ? 30 : 15; // Rock starts with triple damage
     this.weaponSpd = 1;
     this.atkTimer = 0;
     this.atkDelay = 1000;
@@ -860,7 +860,7 @@ class GameScene extends Phaser.Scene {
 
       // Enrage mechanic: enemies move faster and turn red when HP < 25%
       if (!e.maxHp) e.maxHp = e.hp; // Store max HP on first update
-      const isEnraged = e.hp < e.maxHp * 0.25;
+      const isEnraged = e.hp < e.maxHp * 0.15;
       if (isEnraged && !e.wasEnraged) {
         e.wasEnraged = true;
         e.color = 0xff0000; // Turn red
@@ -908,11 +908,9 @@ class GameScene extends Phaser.Scene {
       if (playerDist < this.player.rad + e.rad && this.player.iframeTimer <= 0) {
         if (this.shieldTimer <= 0) { // Shield blocks all damage
           this.player.hp -= e.dmg * delta / 1000;
-        }
-        this.player.iframeTimer = 1200; // 1.2 seconds of invulnerability
+          this.player.iframeTimer = 1200; // 1.2 seconds of invulnerability (only when damage taken)
 
-        // Reset no-hit timers
-        if (this.shieldTimer <= 0) {
+          // Reset no-hit timers (only when damage taken)
           if (charType === 0) {
             this.noHitTimer = 0;
           } else if (charType === 2) {
@@ -1356,12 +1354,10 @@ class GameScene extends Phaser.Scene {
       if (playerDist < this.player.rad + this.boss.rad && this.player.iframeTimer <= 0) {
         if (this.shieldTimer <= 0) { // Shield blocks all damage
           this.player.hp -= this.boss.dmg * delta / 1000;
-        }
-        this.player.iframeTimer = 1200; // 1.2 seconds of invulnerability
-        this.cameras.main.flash(100, 150, 0, 0); // Subtle red flash
+          this.player.iframeTimer = 1200; // 1.2 seconds of invulnerability (only when damage taken)
+          this.cameras.main.flash(100, 150, 0, 0); // Subtle red flash
 
-        // Reset no-hit timers
-        if (this.shieldTimer <= 0) {
+          // Reset no-hit timers (only when damage taken)
           if (charType === 0) {
             this.noHitTimer = 0;
           } else if (charType === 2) {
@@ -2191,7 +2187,7 @@ class GameScene extends Phaser.Scene {
     this.playTone(1000, 0.2);
 
     // Spawn 15-22 enemies in circle around screen edge (50% increase)
-    const count = 15 + Math.floor(Math.random() * 8); // 15-22 enemies
+    const count = 25 + Math.floor(Math.random() * 8); // 15-22 enemies
     const angleStep = (Math.PI * 2) / count;
 
     for (let i = 0; i < count; i++) {
@@ -2220,7 +2216,7 @@ class GameScene extends Phaser.Scene {
     this.enemies.push({
       x, y,
       type: 5, // Gold boss type for visual distinction
-      hp: Math.floor(200 * this.hpMultiplier), // 200 HP base
+      hp: Math.floor(400 * this.hpMultiplier), // 200 HP base
       spd: Math.floor(70 * this.spdMultiplier),
       dmg: Math.floor(15 * this.dmgMultiplier),
       rad: 25, // Bigger than normal
@@ -2345,13 +2341,13 @@ class GameScene extends Phaser.Scene {
     // Base stats for each type
     let hp, spd, dmg, rad, color;
     if (type === 0) { hp = 20; spd = 70; dmg = 10; rad = 10; color = 0xff3333; }
-    else if (type === 1) { hp = 10; spd = 140; dmg = 8; rad = 8; color = 0xffff33; }
-    else if (type === 2) { hp = 50; spd = 42; dmg = 15; rad = 15; color = 0xff33ff; }
-    else if (type === 3) { hp = 15; spd = 84; dmg = 10; rad = 10; color = 0x33ff33; }
-    else if (type === 4) { hp = 25; spd = 98; dmg = 12; rad = 10; color = 0x33ffff; }
-    else if (type === 5) { hp = 100; spd = 56; dmg = 20; rad = 20; color = 0xffaa00; }
+    else if (type === 1) { hp = 10; spd = 140; dmg = 3; rad = 8; color = 0xffff33; }
+    else if (type === 2) { hp = 30; spd = 45; dmg = 15; rad = 15; color = 0xff33ff; }
+    else if (type === 3) { hp = 15; spd = 94; dmg = 10; rad = 10; color = 0x33ff33; }
+    else if (type === 4) { hp = 25; spd = 104; dmg = 12; rad = 10; color = 0x33ffff; }
+    else if (type === 5) { hp = 100; spd = 62; dmg = 20; rad = 20; color = 0xffaa00; }
     else if (type === 6) { hp = 15; spd = 84; dmg = 10; rad = 10; color = 0xff8833; }
-    else if (type === 11) { hp = 35; spd = 56; dmg = 11; rad = 11; color = 0xff6600; }
+    else if (type === 11) { hp = 35; spd = 76; dmg = 11; rad = 11; color = 0xff6600; }
     else { hp = 20; spd = 70; dmg = 10; rad = 10; color = 0xff3333; }
 
     // Apply difficulty multipliers
