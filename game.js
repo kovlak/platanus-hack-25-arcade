@@ -6,12 +6,12 @@ let charType = 0; // 0=classical, 1=rock, 2=electronic
 
 // Power-up definitions
 const POWERUP_TYPES = [
-  { id: 0, name: 'BOOM!', desc: 'All enemies explode', color: 0xff0000 },
-  { id: 1, name: 'MAGNET', desc: 'Collect all XP', color: 0xffff00 },
-  { id: 2, name: 'BOSS!', desc: 'Clear + spawn BOSS', color: 0xff00ff },
-  { id: 3, name: 'SLOW', desc: 'Slow enemies 50%', color: 0x00ffff },
-  { id: 4, name: 'SHIELD', desc: 'Block damage 5s', color: 0x00ff00 },
-  { id: 5, name: '2X XP', desc: '2x XP gain 10s', color: 0xffa500 }
+  { id: 0, name: 'BOOM!', desc: 'Kill all', color: 0xff0000 },
+  { id: 1, name: 'MAGNET', desc: 'Collect XP', color: 0xffff00 },
+  { id: 2, name: 'BOSS!', desc: 'Spawn BOSS', color: 0xff00ff },
+  { id: 3, name: 'SLOW', desc: 'Slow 50%', color: 0x00ffff },
+  { id: 4, name: 'SHIELD', desc: 'Block dmg 5s', color: 0x00ff00 },
+  { id: 5, name: '2X XP', desc: '2x XP 10s', color: 0xffa500 }
 ];
 
 // Canon in D music data
@@ -42,17 +42,14 @@ class SelectScene extends Phaser.Scene {
 
   create() {
     this.add.text(400, 100, 'MUSIC WARS', {
-      fontSize: '48px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '48px', color: '#fff'    }).setOrigin(0.5);
 
-    this.add.text(400, 160, 'Choose Your Genre', {
-      fontSize: '24px', color: '#aaa', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+    this.add.text(400, 160, 'Choose Genre', {
+      fontSize: '24px', color: '#aaa'    }).setOrigin(0.5);
 
-    // Keyboard hint
-    this.add.text(400, 520, 'A/D to navigate • SPACE to select', {
-      fontSize: '16px', color: '#888', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+    // Control hint
+    this.add.text(400, 520, 'Move: Stick • Select: A', {
+      fontSize: '16px', color: '#888'    }).setOrigin(0.5);
 
     // Classical choice
     const classicalBox = this.add.rectangle(200, 350, 180, 250, 0x3333ff, 0.3);
@@ -61,14 +58,11 @@ class SelectScene extends Phaser.Scene {
     this.add.circle(200, 300, 35, 0x5555ff);
     this.add.text(200, 300, '♪', { fontSize: '42px', color: '#fff' }).setOrigin(0.5);
     this.add.text(200, 375, 'CLASSICAL', {
-      fontSize: '18px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
-    this.add.text(200, 400, 'Orbital Notes', {
-      fontSize: '12px', color: '#aaa', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '18px', color: '#fff'    }).setOrigin(0.5);
+    this.add.text(200, 400, 'Orbital', {
+      fontSize: '12px', color: '#aaa'    }).setOrigin(0.5);
     this.add.text(200, 420, '25 HP, 33 Speed', {
-      fontSize: '12px', color: '#aaa', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '12px', color: '#aaa'    }).setOrigin(0.5);
 
     // Electronic choice
     const electronicBox = this.add.rectangle(400, 350, 180, 250, 0x33ff33, 0.3);
@@ -77,14 +71,11 @@ class SelectScene extends Phaser.Scene {
     this.add.circle(400, 300, 35, 0x55ff55);
     this.add.text(400, 300, '⚡', { fontSize: '42px', color: '#fff' }).setOrigin(0.5);
     this.add.text(400, 375, 'ELECTRONIC', {
-      fontSize: '18px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
-    this.add.text(400, 400, 'Chain Lightning', {
-      fontSize: '12px', color: '#aaa', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '18px', color: '#fff'    }).setOrigin(0.5);
+    this.add.text(400, 400, 'Lightning', {
+      fontSize: '12px', color: '#aaa'    }).setOrigin(0.5);
     this.add.text(400, 420, '10 HP, 46 Speed', {
-      fontSize: '12px', color: '#aaa', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '12px', color: '#aaa'    }).setOrigin(0.5);
 
     // Rock choice
     const rockBox = this.add.rectangle(600, 350, 180, 250, 0xff3333, 0.3);
@@ -93,14 +84,11 @@ class SelectScene extends Phaser.Scene {
     this.add.circle(600, 300, 35, 0xff5555);
     this.add.text(600, 300, '♫', { fontSize: '42px', color: '#fff' }).setOrigin(0.5);
     this.add.text(600, 375, 'ROCK', {
-      fontSize: '18px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
-    this.add.text(600, 400, 'Sound Waves', {
-      fontSize: '12px', color: '#aaa', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '18px', color: '#fff'    }).setOrigin(0.5);
+    this.add.text(600, 400, 'Waves', {
+      fontSize: '12px', color: '#aaa'    }).setOrigin(0.5);
     this.add.text(600, 420, '25 HP, 40 Speed', {
-      fontSize: '12px', color: '#aaa', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '12px', color: '#aaa'    }).setOrigin(0.5);
 
     // Store boxes for keyboard navigation
     this.boxes = [classicalBox, electronicBox, rockBox];
@@ -125,18 +113,28 @@ class SelectScene extends Phaser.Scene {
       this.selectedIndex = (this.selectedIndex - 1 + 3) % 3;
       updateSelection();
     });
+    this.input.keyboard.on('keydown-P1L', () => {
+      this.selectedIndex = (this.selectedIndex - 1 + 3) % 3;
+      updateSelection();
+    });
 
     this.input.keyboard.on('keydown-D', () => {
       this.selectedIndex = (this.selectedIndex + 1) % 3;
       updateSelection();
     });
+    this.input.keyboard.on('keydown-P1R', () => {
+      this.selectedIndex = (this.selectedIndex + 1) % 3;
+      updateSelection();
+    });
 
-    this.input.keyboard.on('keydown-SPACE', () => {
+    const selectGenre = () => {
       // Map selectedIndex to charType: 0=Classical, 1=Electronic, 2=Rock
       const charMap = [0, 2, 1]; // Classical, Electronic, Rock
       charType = charMap[this.selectedIndex];
       this.scene.start('GameScene');
-    });
+    };
+    this.input.keyboard.on('keydown-SPACE', selectGenre);
+    this.input.keyboard.on('keydown-P1A', selectGenre);
   }
 }
 
@@ -301,19 +299,16 @@ class GameScene extends Phaser.Scene {
     this.ultBarBg = this.add.rectangle(100, 75, 200, 10).setStrokeStyle(2, 0xffffff).setOrigin(0, 0.5);
 
     this.timerTxt = this.add.text(400, 20, '0:00', {
-      fontSize: '24px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '24px', color: '#fff'    }).setOrigin(0.5);
 
     this.scoreTxt = this.add.text(700, 20, 'Score: 0', {
-      fontSize: '18px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '18px', color: '#fff'    }).setOrigin(0.5);
 
     this.levelTxt = this.add.text(700, 50, 'Lvl: 1', {
-      fontSize: '18px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '18px', color: '#fff'    }).setOrigin(0.5);
 
     // Difficulty indicator (bottom right corner)
-    this.difficultyTxt = this.add.text(750, 580, 'VERY EASY', {
+    this.difficultyTxt = this.add.text(750, 580, 'V.EASY', {
       fontSize: '14px', color: '#00ff00', fontFamily: 'Arial', fontStyle: 'bold'
     }).setOrigin(1, 1);
 
@@ -344,21 +339,20 @@ class GameScene extends Phaser.Scene {
 
     // Countdown UI elements (hidden by default)
     this.countdownTxt = this.add.text(400, 250, '', {
-      fontSize: '120px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5).setVisible(false);
+      fontSize: '120px', color: '#fff'    }).setOrigin(0.5).setVisible(false);
 
     this.powerUpNameTxt = this.add.text(400, 150, '', {
-      fontSize: '48px', color: '#ffff00', fontFamily: 'Arial'
-    }).setOrigin(0.5).setVisible(false);
+      fontSize: '48px', color: '#ffff00'    }).setOrigin(0.5).setVisible(false);
 
     this.powerUpDescTxt = this.add.text(400, 370, '', {
-      fontSize: '24px', color: '#aaa', fontFamily: 'Arial'
-    }).setOrigin(0.5).setVisible(false);
+      fontSize: '24px', color: '#aaa'    }).setOrigin(0.5).setVisible(false);
 
     // Input
     this.keys = this.input.keyboard.addKeys({
       up: 'W', down: 'S', left: 'A', right: 'D',
-      up2: 'UP', down2: 'DOWN', left2: 'LEFT', right2: 'RIGHT'
+      up2: 'UP', down2: 'DOWN', left2: 'LEFT', right2: 'RIGHT',
+      up3: 'P1U', down3: 'P1D', left3: 'P1L', right3: 'P1R',
+      action: 'SPACE', action2: 'P1A'
     });
 
     // Initialize orbital notes for classical
@@ -399,13 +393,13 @@ class GameScene extends Phaser.Scene {
     // Update difficulty indicator
     const timeInSeconds = this.time / 1000;
     if (timeInSeconds < 60) {
-      this.difficultyTxt.setText('VERY EASY');
+      this.difficultyTxt.setText('V.EASY');
       this.difficultyTxt.setColor('#00ff00');
     } else if (timeInSeconds < 90) {
       this.difficultyTxt.setText('EASY');
       this.difficultyTxt.setColor('#88ff00');
     } else if (timeInSeconds < 120) {
-      this.difficultyTxt.setText('MEDIUM');
+      this.difficultyTxt.setText('MED');
       this.difficultyTxt.setColor('#ffff00');
     } else if (timeInSeconds < 180) {
       this.difficultyTxt.setText('HARD');
@@ -579,10 +573,10 @@ class GameScene extends Phaser.Scene {
 
     // Player movement input
     let inputX = 0, inputY = 0;
-    if (this.keys.left.isDown || this.keys.left2.isDown) inputX = -1;
-    if (this.keys.right.isDown || this.keys.right2.isDown) inputX = 1;
-    if (this.keys.up.isDown || this.keys.up2.isDown) inputY = -1;
-    if (this.keys.down.isDown || this.keys.down2.isDown) inputY = 1;
+    if (this.keys.left.isDown || this.keys.left2.isDown || this.keys.left3.isDown) inputX = -1;
+    if (this.keys.right.isDown || this.keys.right2.isDown || this.keys.right3.isDown) inputX = 1;
+    if (this.keys.up.isDown || this.keys.up2.isDown || this.keys.up3.isDown) inputY = -1;
+    if (this.keys.down.isDown || this.keys.down2.isDown || this.keys.down3.isDown) inputY = 1;
 
     if (inputX !== 0 && inputY !== 0) {
       inputX *= 0.707;
@@ -1640,8 +1634,8 @@ class GameScene extends Phaser.Scene {
       }
     }
 
-    // SPACE key - activate ultimate
-    if (this.input.keyboard.addKey('SPACE').isDown && this.ultReady) {
+    // Action button - activate ultimate
+    if ((this.keys.action.isDown || this.keys.action2.isDown) && this.ultReady) {
       this.ultReady = false;
       this.ultCharge = 0;
       this.activateUltimate();
@@ -2547,14 +2541,12 @@ class GameScene extends Phaser.Scene {
     uiElements.push(overlay);
 
     const title = this.add.text(400, 150, 'LEVEL UP!', {
-      fontSize: '48px', color: '#ffff00', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '48px', color: '#ffff00'    }).setOrigin(0.5);
     uiElements.push(title);
 
-    // Keyboard hint
-    const hint = this.add.text(400, 500, 'A/D to navigate • SPACE to select', {
-      fontSize: '16px', color: '#888', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+    // Control hint
+    const hint = this.add.text(400, 500, 'Move: Stick • Select: A', {
+      fontSize: '16px', color: '#888'    }).setOrigin(0.5);
     uiElements.push(hint);
 
     const upgrades = this.getRandomUpgrades();
@@ -2598,8 +2590,11 @@ class GameScene extends Phaser.Scene {
 
       // Remove keyboard listeners
       this.input.keyboard.off('keydown-A', navLeft);
+      this.input.keyboard.off('keydown-P1L', navLeft);
       this.input.keyboard.off('keydown-D', navRight);
+      this.input.keyboard.off('keydown-P1R', navRight);
       this.input.keyboard.off('keydown-SPACE', selectUpgrade);
+      this.input.keyboard.off('keydown-P1A', selectUpgrade);
 
       // Destroy all UI elements
       uiElements.forEach(el => {
@@ -2627,8 +2622,11 @@ class GameScene extends Phaser.Scene {
     };
 
     this.input.keyboard.on('keydown-A', navLeft);
+    this.input.keyboard.on('keydown-P1L', navLeft);
     this.input.keyboard.on('keydown-D', navRight);
+    this.input.keyboard.on('keydown-P1R', navRight);
     this.input.keyboard.on('keydown-SPACE', selectUpgrade);
+    this.input.keyboard.on('keydown-P1A', selectUpgrade);
   }
 
   getRandomUpgrades() {
@@ -2639,22 +2637,22 @@ class GameScene extends Phaser.Scene {
       {
         name: isEvolutionUpgrade ? '⚡ WEAPON EVOLUTION ⚡' : 'Damage +10',
         type: 'dmg',
-        desc: isEvolutionUpgrade ? 'Unlock ultimate power!' : 'Deal more damage'
+        desc: isEvolutionUpgrade ? 'Unlock ultimate power!' : 'More damage'
       },
       {
         name: isEvolutionUpgrade ? '⚡ WEAPON EVOLUTION ⚡' : 'Attack Speed +20%',
         type: 'aspd',
-        desc: isEvolutionUpgrade ? 'Unlock ultimate power!' : charType === 0 ? 'Faster orbit speed' : 'Shoot faster'
+        desc: isEvolutionUpgrade ? 'Unlock ultimate power!' : charType === 0 ? 'Faster orbit' : 'Shoot faster'
       },
       {
         name: 'Move Speed +20%',
         type: 'mspd',
-        desc: 'Move faster'
+        desc: 'Speed up'
       },
       {
         name: 'Max HP +20',
         type: 'hp',
-        desc: 'Increase max health'
+        desc: 'More HP'
       }
     ];
 
@@ -2664,7 +2662,7 @@ class GameScene extends Phaser.Scene {
       allUpgrades.push({
         name: isEvolutionUpgrade ? '⚡ WEAPON EVOLUTION ⚡' : 'More Projectiles',
         type: 'proj',
-        desc: isEvolutionUpgrade ? 'Unlock ultimate power!' : charType === 0 ? 'Add orbital note' : 'Fire more shots'
+        desc: isEvolutionUpgrade ? 'Unlock ultimate power!' : charType === 0 ? 'Add note' : 'More shots'
       });
     }
 
@@ -2673,7 +2671,7 @@ class GameScene extends Phaser.Scene {
       allUpgrades.push({
         name: 'XP Magnet +50%',
         type: 'magnet',
-        desc: 'Attract XP from farther'
+        desc: 'Bigger magnet'
       });
     }
 
@@ -2999,15 +2997,13 @@ class GameScene extends Phaser.Scene {
     const overlay = this.add.rectangle(400, 300, 800, 600, 0x000000, 0.85);
 
     this.add.text(400, 200, 'GAME OVER', {
-      fontSize: '64px', color: '#ff0000', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '64px', color: '#ff0000'    }).setOrigin(0.5);
 
     const mins = Math.floor(this.time / 60000);
     const secs = Math.floor((this.time % 60000) / 1000);
 
     this.add.text(400, 300, 'Survived: ' + mins + ':' + (secs < 10 ? '0' : '') + secs, {
-      fontSize: '32px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '32px', color: '#fff'    }).setOrigin(0.5);
 
     // Check for new record
     const isNewRecord = this.score > this.bestScore;
@@ -3022,8 +3018,7 @@ class GameScene extends Phaser.Scene {
     }
 
     this.add.text(400, 350, 'Score: ' + this.score, {
-      fontSize: '32px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '32px', color: '#fff'    }).setOrigin(0.5);
 
     if (isNewRecord) {
       this.add.text(400, 390, 'NEW RECORD!', {
@@ -3031,17 +3026,14 @@ class GameScene extends Phaser.Scene {
       }).setOrigin(0.5);
     } else {
       this.add.text(400, 390, 'Best: ' + this.bestScore, {
-        fontSize: '24px', color: '#aaaaaa', fontFamily: 'Arial'
-      }).setOrigin(0.5);
+        fontSize: '24px', color: '#aaaaaa'      }).setOrigin(0.5);
     }
 
     this.add.text(400, 430, 'Level: ' + this.level, {
-      fontSize: '32px', color: '#fff', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '32px', color: '#fff'    }).setOrigin(0.5);
 
     const restartTxt = this.add.text(400, 500, 'Press SPACE to Restart', {
-      fontSize: '24px', color: '#ffff00', fontFamily: 'Arial'
-    }).setOrigin(0.5);
+      fontSize: '24px', color: '#ffff00'    }).setOrigin(0.5);
 
     this.tweens.add({
       targets: restartTxt,
@@ -3051,9 +3043,11 @@ class GameScene extends Phaser.Scene {
       repeat: -1
     });
 
-    this.input.keyboard.once('keydown-SPACE', () => {
+    const restartGame = () => {
       this.scene.start('SelectScene');
-    });
+    };
+    this.input.keyboard.once('keydown-SPACE', restartGame);
+    this.input.keyboard.once('keydown-P1A', restartGame);
   }
 
   playTone(freq, dur) {
